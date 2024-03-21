@@ -3,23 +3,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 use chriskacerguis\RestServer\RestController;
 
-class Kendaraan extends RestController {
+class KeteranganCctv extends RestController {
+
+    private $table;
 
     function __construct()
     {
         // Construct the parent class
         parent::__construct();
-        $this->load->model('KendaraanModel');
+        $this->load->model('GlobalModel');
+        $this->table = 'tbl_keterangan_cctv';
     }
 
     public function data_get()
     {
-        $id = $this->get( 'kendaraan_id' );
+        $id = $this->get( 'polda' );
+        
+        $dataid = [
+            "polda" => $id
+        ];
         
         if ( $id === null )
         {
             
-            $data = $this->KendaraanModel->get_data(TRUE);
+            $data = $this->GlobalModel->get_data($this->table,$dataid,TRUE);
             if ( $data )
             {
                 // Set the response and exit
@@ -36,7 +43,7 @@ class Kendaraan extends RestController {
         }
         else
         {
-            $data = $this->KendaraanModel->get_data(FALSE,$id);
+            $data = $this->GlobalModel->get_data($this->table,$dataid,FALSE);
             if ( $data )
             {
                 $this->response( $data, 200 );
@@ -53,15 +60,18 @@ class Kendaraan extends RestController {
     
     public function data_post()
     {
-        // $id = $this->post( 'kendaraan_id' );
+        // $id = $this->post( 'polda' );
         $data = [
-            "jenis_kendaraan" => $this->post( 'jenis_kendaraan' )
+            "polda" => $this->post( 'polda' ),
+            "nama_cctv" => $this->post( 'nama_cctv' ),
+            "status_cctv" => $this->post( 'status_cctv' ),
+            "keterangan" => $this->post( 'keterangan' ),
         ];
         
         if ( $data !== null )
         {
             
-            $insert = $this->KendaraanModel->insert_data($data);
+            $insert = $this->GlobalModel->insert_data($this->table,$data);
             if ( $insert )
             {
                 // Set the response and exit
@@ -87,14 +97,20 @@ class Kendaraan extends RestController {
 
     public function data_put()
     {
-        $id = $this->put( 'kendaraan_id' );
+        $id = $this->put( 'polda' );
+        $dataid = [
+            "polda" => $id
+        ];
         $data = [
-            "jenis_kendaraan" => $this->put( 'jenis_kendaraan' )
+            "polda" => $this->post( 'polda' ),
+            "nama_cctv" => $this->post( 'nama_cctv' ),
+            "status_cctv" => $this->post( 'status_cctv' ),
+            "keterangan" => $this->post( 'keterangan' ),
         ];
         
         if ( $id !== null )
         {
-            $update = $this->KendaraanModel->update_data($data,$id);
+            $update = $this->GlobalModel->update_data($this->table,$dataid,$data);
             if ( $update )
             {
                 // Set the response and exit
@@ -120,12 +136,15 @@ class Kendaraan extends RestController {
     
     public function data_delete()
     {
-        $id = $this->delete( 'kendaraan_id' );
+        $id = $this->delete( 'polda' );
+        $dataid = [
+            "polda" => $id
+        ];
         
         if ( $id !== null )
         {
             
-            $data = $this->KendaraanModel->delete_data($id);
+            $data = $this->GlobalModel->delete_data($this->table,$dataid);
             if ( $data )
             {
                 // Set the response and exit

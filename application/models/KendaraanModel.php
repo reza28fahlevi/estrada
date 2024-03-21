@@ -6,7 +6,6 @@ class KendaraanModel extends CI_Model {
     }
 
     public function get_data($all = TRUE,$id = NULL) {
-        // Your database operations here
         if(!$all) $this->db->where('kendaraan_id',$id);
         $this->db->select('*')->from('tbl_kendaraan');
         if($all){
@@ -16,5 +15,19 @@ class KendaraanModel extends CI_Model {
         }
 
         return $data;
+    }
+
+    function insert_data($data = array()) {
+        return $this->db->insert('tbl_kendaraan', $data);
+    }
+    
+    function update_data($data = array(),$id) {
+        $this->db->where('kendaraan_id', $id);
+        return $this->db->update('tbl_kendaraan', $data);
+    }
+    
+    function delete_data($id) {
+        $this->db->where('kendaraan_id', $id);
+        return $this->db->delete('tbl_kendaraan');
     }
 }
