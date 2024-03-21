@@ -100,4 +100,37 @@ class Traffic extends RestController {
         }
     }
 
+    public function data_delete()
+    {
+        $id = $this->delete( 'id' );
+        $dataid = [
+            "id" => $id
+        ];
+        
+        if ( $id !== null )
+        {
+            
+            $data = $this->GlobalModel->delete_data($this->table,$dataid);
+            if ( $data )
+            {
+                // Set the response and exit
+                $this->response( $data, 200 );
+            }
+            else
+            {
+                // Set the response and exit
+                $this->response( [
+                    'status' => false,
+                    'message' => 'No data were found'
+                ], 404 );
+            }
+        }
+        else
+        {
+            $this->response( [
+                'status' => false,
+                'message' => 'No such data found'
+            ], 404 );
+        }
+    }
 }
